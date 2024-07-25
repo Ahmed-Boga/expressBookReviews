@@ -12,10 +12,10 @@ public_users.post("/register", (req, res) => {
 
 // Get the book list available in the shop
 public_users.get("/", async function (req, res) {
-  const ooks = await books;
-  console.log(ooks);
+  const book = await books;
+  // console.log(book);
   //Write your code here
-  res.send(JSON.stringify(ooks));
+  res.send(JSON.stringify(book));
   // return res.status(300).json({message: "Yet to be implemented"});
 });
 
@@ -25,8 +25,14 @@ public_users.get("/isbn/:isbn", async function (req, res) {
   const booksObject = await books;
   console.log(booksObject);
   const matchedAuthor = req.params;
-  // console.log();
-  res.send(matchedAuthor);
+  let matchedElement;
+  for (const key in booksObject) {
+    // console.log(matchedAuthor["author"], booksObject[key]["author"]);
+    if (matchedAuthor["isbn"] == key.valueOf()) {
+      matchedElement = booksObject[key];
+    }
+  }
+  res.send(matchedElement);
   // return res.status(300).json({ message: "Yet to be implemented" });
 });
 

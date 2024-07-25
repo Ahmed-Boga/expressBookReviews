@@ -76,7 +76,7 @@ regd_users.post("/login", (req, res) => {
       .json({ message: "Invalid Login. Check username and password" });
   }
 });
-// localhost:5000/customer/auth/review/1
+// localhost:5000/customer/aregister
 regd_users.post("/register", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -107,25 +107,30 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   for (const key in booksObject) {
     if (matchedBook["isbn"] == key.valueOf()) {
       // console.log(matchedBook["isbn"], key.valueOf());
-      booksObject[key]["reviews"] = req.body;
+      books[key]["reviews"] = req.body;
     }
   }
-  res.send(booksObject);
-  // return res.status(300).json({ message: "Yet to be implemented" });
+  // res.send(booksObject);
+  return res
+    .status(200)
+    .json({ message: `A Review is added to ${matchedBook["isbn"]}` });
 });
 
 regd_users.delete("/auth/review/:isbn", (req, res) => {
   //Write your code here
   const matchedBook = req.params;
+  let deletdReview;
   let booksObject = books;
   for (const key in booksObject) {
     if (matchedBook["isbn"] == key.valueOf()) {
+      deletdReview = booksObject[key]["reviews"];
       // console.log(matchedBook["isbn"], key.valueOf());
       booksObject[key]["reviews"] = {};
     }
   }
-  res.send(booksObject);
-  // return res.status(300).json({ message: "Yet to be implemented" });
+  return res.status(200).json({
+    message: `The Review with ISBN ${matchedBook["isbn"]}  is deleted`,
+  }); // return res.status(300).json({ message: "Yet to be implemented" });
 });
 
 module.exports.authenticated = regd_users;
